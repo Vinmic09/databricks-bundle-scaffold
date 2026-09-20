@@ -1,0 +1,27 @@
+bundle:
+  name: ${var.bundle_name}
+
+include:
+  - resources/jobs/*.yml
+  - resources/pipelines/*.yml
+  - resources/dashboards/*.yml
+
+variables:
+  bundle_name:
+    description: "Name of the Databricks Bundle"
+    default: "domain-bundle"
+
+  catalog:
+    description: "Unity Catalog catalog"
+
+  schema:
+    description: "Unity Catalog schema"
+
+  dev_workspace_host:
+    description: "Development Databricks workspace URL"
+
+targets:
+  dev:
+    mode: development
+    workspace:
+      host: ${var.dev_workspace_host}

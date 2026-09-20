@@ -1,0 +1,17 @@
+resources:
+  jobs:
+    serverless_sample_job:
+      name: "$serverless-sample-job" 
+      tasks:
+        - task_key: ingestion_task
+          notebook_task:
+            notebook_path: ../../src/notebooks/ingestion.py
+          # No cluster configuration here.
+          # This task uses Databricks Serverless Compute.
+        - task_key: bronze_task 
+          depends_on:
+            - task_key: ingestion_task
+          notebook_task:
+            notebook_path: ../../src/notebooks/bronze.py
+          # No cluster configuration here.
+          # This task also uses Serverless Compute.

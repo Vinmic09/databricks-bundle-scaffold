@@ -1,0 +1,39 @@
+{
+    // Name displayed in VS Code / GitHub Codespaces
+    "name": "Databricks Development Environment",
+
+    // Standard development image stored in Azure Container Registry
+    "image": "your-acr-name.azurecr.io/databricks-dev-container:1.0.0",
+
+    // Open the repository inside the container workspace
+    "workspaceFolder": "/workspace",
+
+    // Load Databricks connection settings from the env file
+    "envFile": ".devcontainer/devcontainer.env",
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // Databricks development support
+                "databricks.databricks",
+
+                // Python development
+                "ms-python.python",
+
+                // Python IntelliSense and type checking
+                "ms-python.vscode-pylance",
+
+                // YAML support
+                "redhat.vscode-yaml"
+            ],
+
+            "settings": {
+                // Use the repository virtual environment
+                "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python"
+            }
+        }
+    },
+
+    // Create the Python virtual environment when the Codespace is created
+    "postCreateCommand": "python -m venv .venv && .venv/bin/pip install -r requirements.txt"
+}

@@ -1,0 +1,3 @@
+catalog: dev_catalog
+schema: dev_schema
+workspace_host: https://...

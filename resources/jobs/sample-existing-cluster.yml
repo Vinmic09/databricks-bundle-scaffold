@@ -1,0 +1,16 @@
+resources:
+  jobs:
+    sample_existing_cluster_job: #Bundle's internal resource key reference
+      name: "$sample-existing-cluster-job" #actual name of the job in Databricks
+      tasks:
+        - task_key: ingestion_task
+          notebook_task:
+            notebook_path: ../../src/notebooks/ingestion.py
+          existing_cluster_id: ${var.cluster_id}
+        
+        - task_key: bronze_task
+          depends_on:
+            - task_key: ingestion_task
+          notebook_task:
+            notebook_path: ../../src/notebooks/bronze.py
+          existing_cluster_id: ${var.cluster_id}

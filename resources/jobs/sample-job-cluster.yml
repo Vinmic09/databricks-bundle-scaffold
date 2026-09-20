@@ -1,0 +1,28 @@
+resources:
+  jobs:
+      job_cluster_sample_job:
+      name: "$job-cluster-sample-job"
+      job_clusters:
+        # "sample_job_cluster" is the internal key for this job cluster.
+        # Tasks use this key through "job_cluster_key".
+        - job_cluster_key: sample_job_cluster
+          # Defines how the job cluster should be created.
+          new_cluster:
+            # The Databricks compute policy that controls the cluster configuration.
+            # The actual policy ID is supplied through the Bundle variable
+            # "cluster_policy_id".
+            policy_id: ${var.cluster_policy_id}
+      tasks:
+        - task_key: ingestion_task
+          notebook_task:
+            notebook_path: ../../src/notebooks/ingestion.py
+          # Tells Databricks to run this task using the job cluster
+          # identified by "sample_job_cluster".
+          job_cluster_key: sample_job_cluster
+
+        - task_key: bronze_task
+          depends_on:
+            - task_key: ingestion_task
+          notebook_task:
+            notebook_path: ../../src/notebooks/bronze.py
+          job_cluster_key: sample_job_cluster
